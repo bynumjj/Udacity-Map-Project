@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Map Project</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
+    <!-- Responsive links -->
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="responsive.css">
+    <link rel="stylesheet" type="text/css" href="final.css">
+    <!-- end responvive links -->
+
+  </head>
+
+
+  <body>
+<!-- hamburger icon  P1-->
+<a id="menu" class="header__menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+          </svg>
+        </a>
+<!-- end hamburger icon -->
+
+<!-- Nav drawer P1 -->
+<nav id="drawer" class="nav">
+      <ul class="nav__list">
+        <li class="nav__item"><a href="#">News</a></li>
+        <li class="nav__item"><a href="#">Events</a></li>
+        <li class="nav__item"><a href="#">Culture</a></li>
+        <li class="nav__item"><a href="#">Blog</a></li>
+      </ul>
+<!-- end nav drawer -->
+
+<!-- code for form inputs P6-->
+<form id="form-container" class="form-container">
+        <label for="street">Street: </label><input type="text" id="street" value="">
+        <label for="city">City: </label><input type="text" id="city" value="">
+        <button id="submit-btn">Submit</button>
+    </form>
+
+    <hr>
+
+    <h2 id="greeting" class="greeting">Where do you want to live?</h2>
+
+
+    <div class="wikipedia-container">
+        <h3 id="wikipedia-header">Relevant Wikipedia Links</h3>
+        <ul id="wikipedia-links">Type in an address above and find relevant Wikipedia articles here!</ul>
+    </div>
+
+
+    <div class="nytimes-container">
+        <h3 id="nytimes-header">New York Times Articles</h3>
+        <ul id="nytimes-articles" class="article-list">What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!</ul>
+    </div>
+
+<!-- end form inputs -->
+
+<!-- Map Div P2->
+<div id="mapDiv">
+            <h2>Where I've Lived and Worked</h2>
+            <a id="map"></a>
+        </div>
+<!-- End Map Div -->
+
+
+
+<!-- Map default P2-->
+<script type="text/javascript">
+        if (document.getElementById('map') === null) {
+            document.getElementById('mapDiv').style.display = "none";
+        }
+    </script>
+<!-- end Map display default -->
+
+<!-- Open the door when the menu icon is clicked P1-->
+<script>
+      var menu = document.querySelector('#menu');
+      var main = document.querySelector('main');
+      var drawer = document.querySelector('.nav');
+
+      menu.addEventListener('click', function(e) {
+        drawer.classList.toggle('open');
+        e.stopPropagation();
+      });
+      main.addEventListener('click', function() {
+        drawer.classList.remove('open');
+      });
+
+    </script>
+    <!-- close menu drawer function -->
+
+  </body>
+</html>
