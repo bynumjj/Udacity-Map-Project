@@ -6,26 +6,61 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Map Project</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
-    <!-- Responsive links -->
-    <link rel="stylesheet" type="text/css" href="main.css">
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo&callback=initMap">
+    </script>"-->
+<!-- Responsive links
     <link rel="stylesheet" type="text/css" href="responsive.css">
     <link rel="stylesheet" type="text/css" href="final.css">
-    <!-- end responvive links -->
+ -->
 
   </head>
 
 
   <body>
-<!-- hamburger icon  P1-->
-<a id="menu" class="header__menu">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
-          </svg>
-        </a>
-<!-- end hamburger icon -->
+<div id='header'>
 
-<!-- Nav drawer P1 -->
+<!-- search field - keep in mind the form tag fucked up cat counter-->
+
+<form id="form-container" class="form-container">
+        <!--<label for="street">Street: </label> -->
+        <input type="text" id="venue" value="Venue location">
+        <button id="submit-btn"><img src="images/magnifier_small.png" alt="Search button"></button>
+</form>
+<!-- end search field -->
+
+  <!-- hamburger icon  P1 -->
+  <a id="menu" class="header__menu">
+<img id="hamburger" src='images/hamburger_small.png'>
+</a>
+ <!-- end hamburger icon-->
+
+</div> <!-- end header -->
+
+
+
+<nav id="drawer" class="nav">
+      <ul class="nav__list">
+        <li class="nav__item">Venue 1</li>
+        <li class="nav__item">venue 2</li>
+        <li class="nav__item">venue 3</li>
+        <li class="nav__item">venue 4</li>
+      </ul>
+</nav>
+
+
+
+
+
+
+
+<div id="map"></div>
+
+
+
+
+<!-- Nav drawer P1
 <nav id="drawer" class="nav">
       <ul class="nav__list">
         <li class="nav__item"><a href="#">News</a></li>
@@ -33,9 +68,9 @@
         <li class="nav__item"><a href="#">Culture</a></li>
         <li class="nav__item"><a href="#">Blog</a></li>
       </ul>
-<!-- end nav drawer -->
+ -->
 
-<!-- code for form inputs P6-->
+<!-- code for form inputs P6
 <form id="form-container" class="form-container">
         <label for="street">Street: </label><input type="text" id="street" value="">
         <label for="city">City: </label><input type="text" id="city" value="">
@@ -58,26 +93,26 @@
         <ul id="nytimes-articles" class="article-list">What's going on in your new city? Enter an address and hit submit and the NY Times will tell you here!</ul>
     </div>
 
-<!-- end form inputs -->
+ -->
 
-<!-- Map Div P2->
+<!-- Map Div P2
 <div id="mapDiv">
             <h2>Where I've Lived and Worked</h2>
             <a id="map"></a>
         </div>
-<!-- End Map Div -->
+-->
 
 
 
-<!-- Map default P2-->
+<!-- Map default P2
 <script type="text/javascript">
         if (document.getElementById('map') === null) {
             document.getElementById('mapDiv').style.display = "none";
         }
     </script>
-<!-- end Map display default -->
+ -->
 
-<!-- Open the door when the menu icon is clicked P1-->
+<!--Open the door when the menu icon is clicked P1-  -->
 <script>
       var menu = document.querySelector('#menu');
       var main = document.querySelector('main');
@@ -92,7 +127,16 @@
       });
 
     </script>
-    <!-- close menu drawer function -->
+ <!--close menu drawer function-->
 
+<!--links to js files
+<script src="js/googlemap.js"></script>
+<script src="js/API.js"></script>
+end links to js files -->
+<script src="js/libs/jquery.min.js"></script>
+<script src="js/app.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo&callback=initMap"
+    async defer></script>
   </body>
 </html>
