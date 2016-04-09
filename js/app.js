@@ -10,7 +10,8 @@ var initialVenues = [
 		latlng: {lat: 55.959488, lng: -3.225575},
 		imgSrc: '#',
 		show: 'TBD',
-		message: "test message"
+		message: "test message",
+		visible: true
 },
 
 {
@@ -21,20 +22,22 @@ var initialVenues = [
 		latlng: {lat: 55.956461, lng: -3.190675},
 		imgSrc: '#',
 		show: 'TBD',
-		message: "test message 2"
+		message: "test message 2",
+		visible: true
 },
 
 {
 		number: 60,
-		name: 'Canongate Kirk',
+		name: 'Bob',
 		address:  '153 Canongate',
 		zipcode: "EH8 8BN",
 		latlng: {lat: 55.951827, lng: -3.179609},
 		imgSrc: '#',
 		show: 'TBD',
-		message: "test message 3"
+		message: "test message 3",
+		visible: true
 }
-]
+];
 
 
 
@@ -47,7 +50,7 @@ function initMap() {
     center: {lat: 55.95162, lng: -3.187821},
     scrollwheel: true,
     zoom: 12
-  });
+  }); // close var map
 
 
 //iterates through venue array and creates markers for each location
@@ -60,20 +63,22 @@ var marker = new google.maps.Marker({
     title: initialVenues[i].name
 
   });//end marker
+}//end for loop
 
-var infowindow = new google.maps.InfoWindow({
+
+/*var infowindow = new google.maps.InfoWindow({
     content: initialVenues[i].message
   });
 
-marker.addListener('click', toggleBounce);
+//marker.addListener('click', toggleBounce);
 marker.addListener('click', function() {
 infowindow.open(map, marker);
 });
 
 }//end marker for loop
+*/
 
-
-
+/*  Comment until I fix animation
 function toggleBounce() {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
@@ -81,12 +86,54 @@ function toggleBounce() {
     marker.setAnimation(google.maps.Animation.BOUNCE);
   }
 }  // end toggleBounce
+*/
+} // end initMap
 
 
-}//end initMap
 
 
 
+
+/* knockout code to generate venue list for nav menu */
+
+var Venue = function(data) {
+
+
+this.name = ko.observable(data.name);
+this.visible = ko.observable(data.visible);
+
+}// end Venue()
+
+// ViewModel code
+var ViewModel = function() {
+
+var self = this;
+this.searchTerm = ko.observable('')
+
+this.venueList = ko.observableArray([]); // will hold all new venues
+
+initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
+	self.venueList.push(new Venue(venueItem) )
+});
+
+
+//this.currentVenue = ko.observable(this.venueList()[0]);  //asssigns venue object to currentVenue
+//don't need this to display in nav list.  used for click function
+}// end ViewModel
+
+/* This code could be used to add click functionality to select marker
+this.incrementCounter = function() {
+	self.currentCat().clickCount(self.currentCat().clickCount() + 1);
+		};
+
+// changes currentCat to cat clicked on in HTML list of cats
+this.setCat = function(clickedCat) {
+self.currentCat(clickedCat);
+			}; // end setCat */
+
+
+
+ko.applyBindings(new ViewModel());
 
 
 
