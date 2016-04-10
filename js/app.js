@@ -4,7 +4,7 @@ var initialVenues = [
 //NOTE:  This data could be downloaded from a server as a JSON
 {
 		number: 230,
-		name: 'St Niniands Hall',
+		name: 'St Ninians Hall',
 		address:  '40 Comely Bank',
 		zipcode: "EH4 1AG",
 		latlng: {lat: 55.959488, lng: -3.225575},
@@ -90,9 +90,9 @@ function toggleBounce() {
 } // end initMap
 
 
+//function searches initialVenues for a match to search term
 
-/*  filter function - works
-var searchTerm = "a"
+var searchTerm = "Kir"
 var filter = function (searchTerm) {
 initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
 	if ((venueItem.name.toLowerCase().indexOf(searchTerm.toLowerCase())) === -1) {
@@ -110,71 +110,24 @@ console.log("0   " + initialVenues[0].visible);
 console.log("1   " + initialVenues[1].visible);
 console.log("2   " + initialVenues[2].visible)
 
-*/
-
-
-
 
 
 
 /* knockout code to generate venue list for nav menu */
 
 var Venue = function(data) {
-
-
 this.name = ko.observable(data.name);
-this.visible = ko.observable(data.visible);
-
+this.visible = ko.observable(data.visible)
 }// end Venue()
 
 // ViewModel code
 var ViewModel = function() {
 
 var self = this;
-//this.searchTerm = ko.observable('')
 
-
-
-this.searchTerm = ko.observable('');
-
-
-filter = function (searchTerm) {
-initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
-	if ((venueItem.name.toLowerCase().indexOf(self.searchTerm().toLowerCase())) === -1) {
-		venueItem.visible = false
-	}
-	else {
-		venueItem.visible = true
-	} // end else
-console.log(venueItem.visible);
-
-
-}); // end for Each
-} // end filter
-
-
-filter()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// test function for list clicking
 bob = function() {
-	console.log("yyy")
-};
-
-
-
+	console.log("bbbb")
+}
 
 this.venueList = ko.observableArray([]); // will hold all new venues
 
