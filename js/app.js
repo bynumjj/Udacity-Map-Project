@@ -4,7 +4,7 @@ var initialVenues = [
 //NOTE:  This data could be downloaded from a server as a JSON
 {
 		number: 230,
-		name: 'St Ninians Hall',
+		name: 'St Niniands Hall',
 		address:  '40 Comely Bank',
 		zipcode: "EH4 1AG",
 		latlng: {lat: 55.959488, lng: -3.225575},
@@ -28,7 +28,7 @@ var initialVenues = [
 
 {
 		number: 60,
-		name: 'Bob',
+		name: 'Canongate Kirk',
 		address:  '153 Canongate',
 		zipcode: "EH8 8BN",
 		latlng: {lat: 55.951827, lng: -3.179609},
@@ -91,6 +91,29 @@ function toggleBounce() {
 
 
 
+/*  filter function - works
+var searchTerm = "a"
+var filter = function (searchTerm) {
+initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
+	if ((venueItem.name.toLowerCase().indexOf(searchTerm.toLowerCase())) === -1) {
+		venueItem.visible = false
+	}
+	else {
+		venueItem.visible = true
+	} // end else
+}); // end for Each
+} // end filter
+
+filter(searchTerm)
+
+console.log("0   " + initialVenues[0].visible);
+console.log("1   " + initialVenues[1].visible);
+console.log("2   " + initialVenues[2].visible)
+
+*/
+
+
+
 
 
 
@@ -108,7 +131,50 @@ this.visible = ko.observable(data.visible);
 var ViewModel = function() {
 
 var self = this;
-this.searchTerm = ko.observable('')
+//this.searchTerm = ko.observable('')
+
+
+
+this.searchTerm = ko.observable('');
+
+
+filter = function (searchTerm) {
+initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
+	if ((venueItem.name.toLowerCase().indexOf(self.searchTerm().toLowerCase())) === -1) {
+		venueItem.visible = false
+	}
+	else {
+		venueItem.visible = true
+	} // end else
+console.log(venueItem.visible);
+
+
+}); // end for Each
+} // end filter
+
+
+filter()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// test function for list clicking
+bob = function() {
+	console.log("yyy")
+};
+
+
+
 
 this.venueList = ko.observableArray([]); // will hold all new venues
 
