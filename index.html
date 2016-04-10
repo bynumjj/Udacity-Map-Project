@@ -24,7 +24,7 @@
 <!-- search field - keep in mind the form tag fucked up cat counter-->
 
 <form id="form-container" class="form-container">
-        <input type='text' data-bind="value: searchTerm" id="inputVenue"></input>
+        <input type='text' data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" ></input>
         <img src="images/magnifier_small.png" alt="Search button">
 </form>
 <!-- end search field -->
@@ -43,22 +43,14 @@
 <h2>List of Venues</h2>
 
 <ul id='venueMenu' data-bind='foreach: venueList'>
-<div data-bind='if: visible'>
-<li data-bind='text: name'></li>
+<div data-bind="if: visible">
+<li data-bind="text: name, click: bob">
+<a href='' ></a>
+</li>
 </div>
 </ul>
 </nav>
 
-<!--, click: $parent.setCat'
-  <nav id="drawer" class="nav">
-<ul class="nav__list">
-        <li class="nav__item">Venue 1</li>
-        <li class="nav__item">venue 2</li>
-        <li class="nav__item">venue 3</li>
-        <li class="nav__item">venue 4</li>
-      </ul>
-      </nav>
--->
 
 
 
