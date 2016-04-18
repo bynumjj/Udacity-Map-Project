@@ -11,6 +11,7 @@ var initialVenues = [
 		imgSrc: '#',
 		show: 'TBD',
 		message: "test message",
+		searchTerm: '',
 		visible: true
 },
 
@@ -23,6 +24,7 @@ var initialVenues = [
 		imgSrc: '#',
 		show: 'TBD',
 		message: "test message 2",
+		searchTerm: '',
 		visible: true
 },
 
@@ -35,6 +37,7 @@ var initialVenues = [
 		imgSrc: '#',
 		show: 'TBD',
 		message: "test message 3",
+		searchTerm: '',
 		visible: true
 }
 ];
@@ -45,6 +48,7 @@ var initialVenues = [
 var marker;
 
 function initMap() {
+
   // Create a map object and specify the DOM element for display.
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 55.95162, lng: -3.187821},
@@ -54,31 +58,28 @@ function initMap() {
 
 
 //iterates through venue array and creates markers for each location
-// incorporate   marker.setMap(null)
-for (var i = 0; i < 3; i++) {
+// incorporate marker.setMap(null) to hide markers
+// TODO  fix all onclicks bound to last maker
+var makeMarker = function() {
+
+for (var i = 0; i < initialVenues.length; i++) {
 var marker = new google.maps.Marker({
     position: initialVenues[i].latlng,
     map: map,
-    //animation: google.maps.Animation.DROP,
+    animation: google.maps.Animation.DROP,
     title: initialVenues[i].name
 
-  });//end marker
-}//end for loop
+  });//end var marker
 
-
-/*var infowindow = new google.maps.InfoWindow({
+var infowindow = new google.maps.InfoWindow({
     content: initialVenues[i].message
-  });
+  }); // end infowindow
 
-//marker.addListener('click', toggleBounce);
 marker.addListener('click', function() {
 infowindow.open(map, marker);
 });
 
-}//end marker for loop
-*/
 
-/*  Comment until I fix animation
 function toggleBounce() {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
@@ -86,59 +87,120 @@ function toggleBounce() {
     marker.setAnimation(google.maps.Animation.BOUNCE);
   }
 }  // end toggleBounce
-*/
+
+marker.addListener('click', toggleBounce);
+
+
+}//end marker for loop
+} //end makeMarker()
+
+makeMarker()
+
 } // end initMap
 
 
-//function searches initialVenues for a match to search term
-
-var searchTerm = "Kir"
-var filter = function (searchTerm) {
-initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
-	if ((venueItem.name.toLowerCase().indexOf(searchTerm.toLowerCase())) === -1) {
-		venueItem.visible = false
-	}
-	else {
-		venueItem.visible = true
-	} // end else
-}); // end for Each
-} // end filter
-
-filter(searchTerm)
-
-console.log("0   " + initialVenues[0].visible);
-console.log("1   " + initialVenues[1].visible);
-console.log("2   " + initialVenues[2].visible)
 
 
 
 
-/* knockout code to generate venue list for nav menu */
-
+//Venue() turns initial input data into ko.observable format.
 var Venue = function(data) {
+this.number = ko.observable(data.number);
 this.name = ko.observable(data.name);
-this.visible = ko.observable(data.visible)
+this.address = ko.observable(data.address);
+this.zipcode = ko.observable(data.zipcode);
+this.latlng = ko.observable(data.latlng);
+this.imgSrc = ko.observable(data.imgSrc);
+this.visible = ko.observable(true);
 }// end Venue()
 
+
+
 // ViewModel code
+
 var ViewModel = function() {
 
 var self = this;
-
-bob = function() {
-	console.log("bbbb")
-}
-
 this.venueList = ko.observableArray([]); // will hold all new venues
-
-initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
-	self.venueList.push(new Venue(venueItem) )
+this.searchTerm = ko.observable("");
+initialVenues.forEach(function(item){  //  for each venue in intial venues, it converts it into Venue object
+	self.venueList.push(new Venue(item) ) // and stores it in venueList array
 });
+
+
+this.filteredList = ko.computed(function() {
+		var filter = self.searchTerm().toLowerCase();
+		if (!filter) {
+			return self.venueList();
+		} else {
+			return ko.utils.arrayFilter(self.venueList(), function(item) {
+				var string = item.name().toLowerCase();
+				return (string.indexOf(filter) >= 0);
+			});
+		}
+	}, self);
+
+
+
+
+
+
+/*
+var filter = self.searchTerm().toLowerCase();
+console.log(filter)
+if (!filter) {
+	return this.venueList();
+} //end if
+
+else {
+	return ko.utils.arrayFilter(self.venueList(), function(venueItem) {
+	return ko.utils.stringStartsWith(venueItem.name().toLowerCase(), filter);
+}); // end fucntion(Venue.name)
+
+}  // end utils.arrayFilter
+
+}, self);   //end filteredVenues()
+
+console.log(this.filteredVenues())
+
+*/
+
+/*this.filteredVenues = ko.computed(function() {
+self.venueList().forEach(function(venueItem) {
+	alert(self.venueItem.name)
+	if ((self.venueItem.name.toLowerCase().indexOf(self.searchTerm().toLowerCase())) === -1) {
+		return venueItem.visible = false
+	}
+	else {
+		return venueItem.visible = true
+	} // end else
+}); // end forEach
+}, self*/
+
+}  // end ViewModel
+
+ko.applyBindings(new ViewModel());  //initializes ViewModel
+
+
+//draft filter function
+
+/*
+self.venueList().forEach(function(venueItem) {
+	if ((venueItem.name.toLowerCase().indexOf(self.searchTerm().toLowerCase())) === -1) {
+		return self.visible = false
+	}
+	else {
+		return self.visible = true
+	} // end else
+}); // end forEach
+*/
+
+
 
 
 //this.currentVenue = ko.observable(this.venueList()[0]);  //asssigns venue object to currentVenue
 //don't need this to display in nav list.  used for click function
-}// end ViewModel
+// end ViewModel
 
 /* This code could be used to add click functionality to select marker
 this.incrementCounter = function() {
@@ -152,7 +214,7 @@ self.currentCat(clickedCat);
 
 
 
-ko.applyBindings(new ViewModel());
+
 
 
 
