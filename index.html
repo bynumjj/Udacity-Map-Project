@@ -23,12 +23,12 @@
 
 <!-- search field - keep in mind the form tag fucked up cat counter-->
 
-<form id="form-container" class="form-container">
-        <input type='text' data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" ></input>
+<div id="form-container" class="form-container">
+        <input type='text' data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" />
         <img src="images/magnifier_small.png" alt="Search button">
-</form>
+</div>
 <!-- end search field -->
-<div data-bind='text: searchTerm'></div>
+
   <!-- hamburger icon  P1 -->
   <a id="menu" class="header__menu">
 <img id="hamburger" src='images/hamburger_small.png'>
@@ -42,9 +42,9 @@
 <nav id="drawer" class="nav">
 <h2>List of Venues</h2>
 
-<ul id='venueMenu' data-bind='foreach: venueList'>
-<div data-bind="if: visible">
-<li data-bind="text: name, click: bob">
+<ul id='venueMenu' data-bind='foreach: filteredList'>
+<!--<div data-bind="if: visible"> -->
+<li data-bind="text: name">
 <a href='' ></a>
 </li>
 </div>
