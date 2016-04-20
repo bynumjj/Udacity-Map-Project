@@ -5,18 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Map Project</title>
-
-
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo&callback=initMap">
-    </script>"-->
-<!-- Responsive links
-    <link rel="stylesheet" type="text/css" href="responsive.css">
-    <link rel="stylesheet" type="text/css" href="final.css">
- -->
-
   </head>
-
 
   <body>
 <div id='header'>
@@ -37,31 +27,20 @@
 
 </div> <!-- end header -->
 
-
-
+<!-- creates nav drawer -->
 <nav id="drawer" class="nav">
 <h2>List of Venues</h2>
-
 <ul id='venueMenu' data-bind='foreach: filteredList'>
 <li data-bind="text: name">
 <a href='' ></a>
 </li>
-</div>
 </ul>
 </nav>
-
-
-
-
+<!-- end nav drawer -->
 
 <div id="map"></div>
 
-
-
-
-
-
-<!--Open the door when the menu icon is clicked P1-  -->
+<!-- Toggle nav drawer when hamburger is clicked -->
 <script>
       var menu = document.querySelector('#menu');
       var main = document.querySelector('main');
@@ -78,14 +57,9 @@
     </script>
  <!--close menu drawer function-->
 
-<!--links to js files
-<script src="js/googlemap.js"></script>
-<script src="js/API.js"></script>
-end links to js files -->
 <script src="js/libs/jquery.min.js"></script>
 <script src="js/libs/knockout-3.2.0.js"></script>
- <!-- <script src="js/app.js"></script> -->
-<script src="js/backups/app.js"></script>
+<script src="js/app.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo&callback=initMap"
     async defer></script>

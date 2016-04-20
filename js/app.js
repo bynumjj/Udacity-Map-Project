@@ -3,7 +3,7 @@
 var map, infowindow, marker;
 
 var initialVenues = [
-//NOTE:  This data could be downloaded from a server as a JSON
+
 {
 		number: 230,
 		name: 'St Ninians Hall',
