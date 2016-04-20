@@ -21,14 +21,14 @@
   <body>
 <div id='header'>
 
-<!-- search field - keep in mind the form tag fucked up cat counter-->
+<!-- search field -->
 
-<form id="form-container" class="form-container">
-        <input type='text' data-bind="value: searchTerm" id="inputVenue"></input>
+<div id="form-container" class="form-container">
+        <input type='text' data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" />
         <img src="images/magnifier_small.png" alt="Search button">
-</form>
+</div>
 <!-- end search field -->
-<div data-bind='text: searchTerm'></div>
+
   <!-- hamburger icon  P1 -->
   <a id="menu" class="header__menu">
 <img id="hamburger" src='images/hamburger_small.png'>
@@ -42,23 +42,14 @@
 <nav id="drawer" class="nav">
 <h2>List of Venues</h2>
 
-<ul id='venueMenu' data-bind='foreach: venueList'>
-<div data-bind='if: visible'>
-<li data-bind='text: name'></li>
+<ul id='venueMenu' data-bind='foreach: filteredList'>
+<li data-bind="text: name">
+<a href='' ></a>
+</li>
 </div>
 </ul>
 </nav>
 
-<!--, click: $parent.setCat'
-  <nav id="drawer" class="nav">
-<ul class="nav__list">
-        <li class="nav__item">Venue 1</li>
-        <li class="nav__item">venue 2</li>
-        <li class="nav__item">venue 3</li>
-        <li class="nav__item">venue 4</li>
-      </ul>
-      </nav>
--->
 
 
 
@@ -93,7 +84,8 @@
 end links to js files -->
 <script src="js/libs/jquery.min.js"></script>
 <script src="js/libs/knockout-3.2.0.js"></script>
-<script src="js/app.js"></script>
+ <!-- <script src="js/app.js"></script> -->
+<script src="js/backups/app2.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo&callback=initMap"
     async defer></script>

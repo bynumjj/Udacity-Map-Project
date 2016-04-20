@@ -1,17 +1,17 @@
 
 
+var map, infowindow, marker;
+
 var initialVenues = [
 //NOTE:  This data could be downloaded from a server as a JSON
 {
 		number: 230,
-		name: 'St Niniands Hall',
+		name: 'St Ninians Hall',
 		address:  '40 Comely Bank',
 		zipcode: "EH4 1AG",
 		latlng: {lat: 55.959488, lng: -3.225575},
 		imgSrc: '#',
-		show: 'TBD',
-		message: "test message",
-		visible: true
+		windowContent: "test message 1"
 },
 
 {
@@ -21,9 +21,7 @@ var initialVenues = [
 		zipcode: "EH1 3EP",
 		latlng: {lat: 55.956461, lng: -3.190675},
 		imgSrc: '#',
-		show: 'TBD',
-		message: "test message 2",
-		visible: true
+		windowContent: 'test message 2'
 },
 
 {
@@ -33,184 +31,89 @@ var initialVenues = [
 		zipcode: "EH8 8BN",
 		latlng: {lat: 55.951827, lng: -3.179609},
 		imgSrc: '#',
-		show: 'TBD',
-		message: "test message 3",
-		visible: true
+		windowContent: "test message 3"
 }
 ];
 
-
-
-
-var marker;
-
-function initMap() {
-  // Create a map object and specify the DOM element for display.
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 55.95162, lng: -3.187821},
-    scrollwheel: true,
-    zoom: 12
-  }); // close var map
-
-
-//iterates through venue array and creates markers for each location
-// incorporate   marker.setMap(null)
-for (var i = 0; i < 3; i++) {
-var marker = new google.maps.Marker({
-    position: initialVenues[i].latlng,
-    map: map,
-    //animation: google.maps.Animation.DROP,
-    title: initialVenues[i].name
-
-  });//end marker
-}//end for loop
-
-
-/*var infowindow = new google.maps.InfoWindow({
-    content: initialVenues[i].message
-  });
-
-//marker.addListener('click', toggleBounce);
-marker.addListener('click', function() {
-infowindow.open(map, marker);
-});
-
-}//end marker for loop
-*/
-
-/*  Comment until I fix animation
-function toggleBounce() {
-  if (marker.getAnimation() !== null) {
-    marker.setAnimation(null);
-  } else {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-  }
-}  // end toggleBounce
-*/
-} // end initMap
-
-
-
-/*  filter function - works
-var searchTerm = "a"
-var filter = function (searchTerm) {
-initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
-	if ((venueItem.name.toLowerCase().indexOf(searchTerm.toLowerCase())) === -1) {
-		venueItem.visible = false
-	}
-	else {
-		venueItem.visible = true
-	} // end else
-}); // end for Each
-} // end filter
-
-filter(searchTerm)
-
-console.log("0   " + initialVenues[0].visible);
-console.log("1   " + initialVenues[1].visible);
-console.log("2   " + initialVenues[2].visible)
-
-*/
-
-
-
-
-
-
-/* knockout code to generate venue list for nav menu */
-
+// Venue() turns initial input data into ko.observable format.
+// creates markers and click functions and adds them to venue items
+// as a property.
 var Venue = function(data) {
-
-
+this.number = ko.observable(data.number);
 this.name = ko.observable(data.name);
-this.visible = ko.observable(data.visible);
+this.address = ko.observable(data.address);
+this.zipcode = ko.observable(data.zipcode);
+this.latlng = ko.observable(data.latlng);
+this.imgSrc = ko.observable(data.imgSrc);
 
+this.infowindow = new google.maps.InfoWindow();
+
+this.marker = new google.maps.Marker({
+    position: initialVenues.latlng,
+    map: map,
+    animation: google.maps.Animation.DROP,
+    title: initialVenues.name,
+    content: initialVenues.windowContent
+  });// end var marker
+
+// for toggling marker visibility
+this.marker.visible = true;
+
+// add click functions to markers
+this.marker.addListener('click', (function() {
+		// adds content to infowindow
+	infowindow.setContent(this.content);
+		//opens info window
+	infowindow.open(map, this);
+		// adds bounce animation
+	if (this.getAnimation() !== null) {
+    this.setAnimation(null);
+  } else {
+    this.setAnimation(google.maps.Animation.BOUNCE);
+  }  // close else
+  } // close function
+)); // close marker.addListener
 }// end Venue()
+
 
 // ViewModel code
 var ViewModel = function() {
 
 var self = this;
-//this.searchTerm = ko.observable('')
+this.searchTerm = ko.observable("");
+this.venueList = ko.observableArray([]);
 
-
-
-this.searchTerm = ko.observable('');
-
-
-filter = function (searchTerm) {
-initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
-	if ((venueItem.name.toLowerCase().indexOf(self.searchTerm().toLowerCase())) === -1) {
-		venueItem.visible = false
-	}
-	else {
-		venueItem.visible = true
-	} // end else
-console.log(venueItem.visible);
-
-
-}); // end for Each
-} // end filter
-
-
-filter()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// test function for list clicking
-bob = function() {
-	console.log("yyy")
-};
-
-
-
-
-this.venueList = ko.observableArray([]); // will hold all new venues
-
-initialVenues.forEach(function(venueItem){  //  fills up venueList array with venue objects from initialVenues
-	self.venueList.push(new Venue(venueItem) )
+// adds each venue to observable array venueList
+initialVenues.forEach(function(item){
+	self.venueList.push(new Venue(item))
 });
 
+// creates the map
+this.map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 55.95162, lng: -3.187821},
+    scrollwheel: true,
+    zoom: 12
+  });
 
-//this.currentVenue = ko.observable(this.venueList()[0]);  //asssigns venue object to currentVenue
-//don't need this to display in nav list.  used for click function
-}// end ViewModel
+// pushes filtered venues into filteredList array
+this.filteredList = ko.computed(function() {
+		var filter = self.searchTerm().toLowerCase();
+		if (!filter) {
+			return self.venueList();
+		} else {
+			return ko.utils.arrayFilter(self.venueList(), function(item) {
+				var string = item.name().toLowerCase();
+				return (string.indexOf(filter) >= 0);
+			});
+		}
+	}, self);  // end fileredList
 
-/* This code could be used to add click functionality to select marker
-this.incrementCounter = function() {
-	self.currentCat().clickCount(self.currentCat().clickCount() + 1);
-		};
+}  // end ViewModel
 
-// changes currentCat to cat clicked on in HTML list of cats
-this.setCat = function(clickedCat) {
-self.currentCat(clickedCat);
-			}; // end setCat */
-
-
-
-ko.applyBindings(new ViewModel());
-
-
-
-
-
-
-
-
-
+function initMap() {
+ko.applyBindings(new ViewModel());  //initializes ViewModel
+}
 
 
 
-
-//KEy  AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo
+// GoogleMaps key:  AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo
