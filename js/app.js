@@ -9,7 +9,7 @@ var initialVenues = [
 		name: 'St Ninians Hall',
 		address:  '40 Comely Bank',
 		zipcode: "EH4 1AG",
-		latlng: {lat: 55.959488, lng: -3.225575},
+		LatLng: {lat: 55.959488, lng: -3.225575},
 		imgSrc: '#',
 		windowContent: "test message 1"
 },
@@ -19,7 +19,7 @@ var initialVenues = [
 		name: 'Stand Comedy Club 3 & 4',
 		address:  '28 York Place',
 		zipcode: "EH1 3EP",
-		latlng: {lat: 55.956461, lng: -3.190675},
+		LatLng: {lat: 55.956461, lng: -3.190675},
 		imgSrc: '#',
 		windowContent: 'test message 2'
 },
@@ -29,7 +29,7 @@ var initialVenues = [
 		name: 'Canongate Kirk',
 		address:  '153 Canongate',
 		zipcode: "EH8 8BN",
-		latlng: {lat: 55.951827, lng: -3.179609},
+		LatLng: {lat: 55.951827, lng: -3.179609},
 		imgSrc: '#',
 		windowContent: "test message 3"
 }
@@ -49,13 +49,13 @@ this.imgSrc = ko.observable(data.imgSrc);
 this.infowindow = new google.maps.InfoWindow();
 
 this.marker = new google.maps.Marker({
-    position: initialVenues.latlng,
+    position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
-    title: initialVenues.name,
-    content: initialVenues.windowContent
+    title: data.name,
+    content: data.windowContent
   });// end var marker
-
+alert(this.marker.position);
 // for toggling marker visibility
 this.marker.visible = true;
 
@@ -88,6 +88,7 @@ initialVenues.forEach(function(item){
 	self.venueList.push(new Venue(item))
 });
 
+alert(this.venueList()[0].marker.position);
 // creates the map
 this.map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 55.95162, lng: -3.187821},
