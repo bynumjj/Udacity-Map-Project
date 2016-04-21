@@ -2,6 +2,7 @@
 
 var map, infowindow, marker;
 
+
 var initialShows = [
 
 {
@@ -106,6 +107,8 @@ var initialShows = [
 
 ];
 
+// creates the map
+
 // Venue() turns initial input data into ko.observable format.
 // creates markers and click functions and adds them to venue items
 // as a property.
@@ -116,6 +119,10 @@ this.address = ko.observable(data.address);
 this.zipcode = ko.observable(data.zipcode);
 this.latlng = ko.observable(data.latlng);
 this.imgSrc = ko.observable(data.imgSrc);
+this.showInfo = ko.computed(function() {
+return ("<p>" + this.imgSrc() + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>");
+}, this);
+
 
 this.infowindow = new google.maps.InfoWindow();
 
@@ -125,7 +132,7 @@ this.marker = new google.maps.Marker({
     map: map,
     animation: google.maps.Animation.DROP,
     title: data.show,
-    content: data.windowContent
+    content: data.showInfo
   });// end var marker
 
 // for toggling marker visibility
@@ -160,13 +167,6 @@ initialShows.forEach(function(item){
 	self.showList.push(new Venue(item))
 });
 
-// creates the map
-this.map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 55.95162, lng: -3.187821},
-    scrollwheel: true,
-    zoom: 12
-  });
-
 // pushes filtered venues into filteredList array
 this.filteredList = ko.computed(function() {
 		var filter = self.searchTerm().toLowerCase();
@@ -198,9 +198,18 @@ for (var i = 0; i < this.filteredList().length ; i++) {
 
 }  // end ViewModel
 
+
 function initMap() {
-ko.applyBindings(new ViewModel());  //initializes ViewModel
+map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 55.95162, lng: -3.187821},
+    scrollwheel: true,
+    zoom: 12
+  });
 }
+
+ko.applyBindings(new ViewModel());  //initializes ViewModel
+
+
 
 
 
