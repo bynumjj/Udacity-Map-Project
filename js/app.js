@@ -113,18 +113,27 @@ var initialShows = [
 // creates markers and click functions and adds them to venue items
 // as a property.
 var Venue = function(data) {
+
+	var self = this;
+
 this.show = ko.observable(data.show);
 this.venue = ko.observable(data.venue);
 this.address = ko.observable(data.address);
 this.zipcode = ko.observable(data.zipcode);
 this.latlng = ko.observable(data.latlng);
 this.imgSrc = ko.observable(data.imgSrc);
+this.showInfo = "<p>"+ "<img height='120px' src =" + this.imgSrc() + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>"
+
+/*
 this.showInfo = ko.computed(function() {
 return ("<p>" + this.imgSrc() + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>");
-}, this);
+}, this);*/
 
 
-this.infowindow = new google.maps.InfoWindow();
+this.infowindow = new google.maps.InfoWindow( {
+	content: this.showInfo
+});
+//this.infowindow.open(map, marker);
 
 // creates markers
 this.marker = new google.maps.Marker({
@@ -132,18 +141,18 @@ this.marker = new google.maps.Marker({
     map: map,
     animation: google.maps.Animation.DROP,
     title: data.show,
-    content: data.showInfo
+    //content: data.showInfo
   });// end var marker
 
+
+
 // for toggling marker visibility
-this.marker.setVisible = true;
+//this.marker.setVisible = true;
 
 // add click functions to markers
 this.marker.addListener('click', (function() {
-		// adds content to infowindow
-	infowindow.setContent(this.content);
 		//opens info window
-	infowindow.open(map, this);
+	self.infowindow.open(map, this);
 		// adds bounce animation
 	if (this.getAnimation() !== null) {
     this.setAnimation(null);
@@ -152,6 +161,7 @@ this.marker.addListener('click', (function() {
   }  // close else
   } // close function
 )); // close marker.addListener
+
 }// end Venue()
 
 
@@ -205,9 +215,9 @@ map = new google.maps.Map(document.getElementById('map'), {
     scrollwheel: true,
     zoom: 12
   });
+ko.applyBindings(new ViewModel());  //initializes ViewModel
 }
 
-ko.applyBindings(new ViewModel());  //initializes ViewModel
 
 
 
