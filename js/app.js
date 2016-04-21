@@ -124,16 +124,12 @@ this.latlng = ko.observable(data.latlng);
 this.imgSrc = ko.observable(data.imgSrc);
 this.showInfo = "<p>"+ "<img height='120px' src =" + this.imgSrc() + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>"
 
-/*
-this.showInfo = ko.computed(function() {
-return ("<p>" + this.imgSrc() + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>");
-}, this);*/
 
 
-this.infowindow = new google.maps.InfoWindow( {
+/*this.infowindow = new google.maps.InfoWindow( {
 	content: this.showInfo
-});
-//this.infowindow.open(map, marker);
+});*/
+
 
 // creates markers
 this.marker = new google.maps.Marker({
@@ -151,8 +147,9 @@ this.marker = new google.maps.Marker({
 
 // add click functions to markers
 this.marker.addListener('click', (function() {
-		//opens info window
-	self.infowindow.open(map, this);
+		//opens info window  did have self. prefix
+	infowindow.open(map, this);
+	infowindow.setContent(self.showInfo)
 		// adds bounce animation
 	if (this.getAnimation() !== null) {
     this.setAnimation(null);
@@ -215,6 +212,9 @@ map = new google.maps.Map(document.getElementById('map'), {
     scrollwheel: true,
     zoom: 12
   });
+
+infowindow = new google.maps.InfoWindow
+
 ko.applyBindings(new ViewModel());  //initializes ViewModel
 }
 
