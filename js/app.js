@@ -107,6 +107,7 @@ var initialShows = [
 
 ];
 
+
 // creates the map
 
 // Venue() turns initial input data into ko.observable format.
@@ -114,7 +115,7 @@ var initialShows = [
 // as a property.
 var Venue = function(data) {
 
-	var self = this;
+var self = this;
 
 this.show = ko.observable(data.show);
 this.venue = ko.observable(data.venue);
@@ -124,38 +125,29 @@ this.latlng = ko.observable(data.latlng);
 this.imgSrc = ko.observable(data.imgSrc);
 this.showInfo = "<p>"+ "<img height='120px' src =" + this.imgSrc() + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>"
 
-
-
-/*this.infowindow = new google.maps.InfoWindow( {
-	content: this.showInfo
-});*/
-
-
 // creates markers
 this.marker = new google.maps.Marker({
     position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
     title: data.show,
-    //content: data.showInfo
+    content: data.showInfo
   });// end var marker
 
-
-
-// for toggling marker visibility
-//this.marker.setVisible = true;
-
-// add click functions to markers
+//adds click functions to markers
 this.marker.addListener('click', (function() {
-		//opens info window  did have self. prefix
+		//adds content to infowindow
+	infowindow.setContent(self.showInfo);
+		//opens infowindow
 	infowindow.open(map, this);
-	infowindow.setContent(self.showInfo)
 		// adds bounce animation
 	if (this.getAnimation() !== null) {
     this.setAnimation(null);
   } else {
     this.setAnimation(google.maps.Animation.BOUNCE);
   }  // close else
+  	// limits how long markers bounce after click
+	setTimeout(function() {self.marker.setAnimation(null)}, 2050);
   } // close function
 )); // close marker.addListener
 
@@ -174,7 +166,14 @@ initialShows.forEach(function(item){
 	self.showList.push(new Venue(item))
 });
 
-// pushes filtered venues into filteredList array
+this.hide = function() {
+this.visible
+	this.marker.event('click')
+}
+
+// pushes filtered shows into filteredList array
+// hides non-selected markers
+// closes infowindow
 this.filteredList = ko.computed(function() {
 		var filter = self.searchTerm().toLowerCase();
 		if (!filter) {
@@ -182,38 +181,26 @@ this.filteredList = ko.computed(function() {
 		} else {
 			return ko.utils.arrayFilter(self.showList(), function(item) {
 				var string = item.show().toLowerCase();
-				return (string.indexOf(filter) >= 0);
-			});
-		}
+				var showMarker = (string.indexOf(filter) >= 0);
+				item.marker.setVisible(showMarker)
+				infowindow.close()
+				return showMarker
+			}); // end else
+		}  // end function
 	}, self);  // end filteredList
-
-// identifies markers that match the filtered list
-// just console logs now, but can insert visible property
-/*
-this.markerList = ko.computed(function() {
-for (var i = 0; i < this.filteredList().length ; i++) {
-	for (var z = 0; z < this.showList().length; z++) {
-    if (self.filteredList()[i].show() === self.showList()[z].show()) {
-    	// draft set visible prop. I think nees to be changed to not=
-    	self.showList()[z].marker.setVisible(false);
-        console.log(self.filteredList()[i].show());
-    } // end if loop
-}  // end z loop
-}// end i loop
-}, self)  // end markerList
-*/
 
 }  // end ViewModel
 
 
 function initMap() {
 map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 55.95162, lng: -3.187821},
+    center: {lat: 55.946298, lng: -3.189972},
     scrollwheel: true,
-    zoom: 12
-  });
+    zoom: 14
 
-infowindow = new google.maps.InfoWindow
+  });
+	// creates one window whose properties are reset when a marker is clicked
+    infowindow = new google.maps.InfoWindow
 
 ko.applyBindings(new ViewModel());  //initializes ViewModel
 }
