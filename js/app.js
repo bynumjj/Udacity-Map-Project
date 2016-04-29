@@ -125,35 +125,30 @@ this.latlng = data.latlng;
 this.imgSrc = data.imgSrc;
 this.wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + this.show() + '&prop=revisions&rvprop=content&format=json&callback=wikiCallback'
 
+this.contentString = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address + '<br/>' + '%wiki%' + "</p>"
+//
+
 $.ajax({
     url: this.wikiURL,
     dataType: 'jsonp',
     success:  function(response) {
-var articleStr = response[0];
-var link = 'http://en.wikipedia.org/wiki/' + articleStr;
-this.wiki = '<a href="' + link + '">'  + self.show() + '</a>';
-    console.log(this.wiki)
-    } // end success
-}); // end ajax
-
-// Problem:  console.logging this.wiki in the ajax call produces the correct answer.  But referencing this.wiki in the infoWindow -- this.showInfo -- throws undefined.
-
-
-this.showInfo = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address + '<br/>' + this.wiki + "</p>"
+	var articleSubject = response[0];
+	var link = 'http://en.wikipedia.org/wiki/' + articleSubject;
+	var wikiLink = '<a href="' + link + '">'  + self.show() + '</a>';
+	self.content = self.contentString.replace('%wiki%', wikiLink)
 
 // creates markers
 this.marker = new google.maps.Marker({
     position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
-    title: data.show,
-    content: data.showInfo
+    title: data.show
   });// end var marker
 
 //adds click functions to markers
 this.marker.addListener('click', (function() {
 		//adds content to infowindow
-	infowindow.setContent(self.showInfo);
+	infowindow.setContent(self.content);
 		//opens infowindow
 	infowindow.open(map, this);
 		// adds bounce animation
@@ -167,13 +162,19 @@ this.marker.addListener('click', (function() {
   } // close function
 )); // close marker.addListener
 
-}// end Venue()
+    console.log(this.wiki)
+    } // end success
+}).fail(function() {
+	alert('Your wikipedia request has failed')
+	}); // end ajax
 
+}// end Venue()
 
 // ViewModel code
 var ViewModel = function() {
 
 var self = this;
+
 this.searchTerm = ko.observable("");
 this.showList = ko.observableArray([]);
 
@@ -181,6 +182,7 @@ this.showList = ko.observableArray([]);
 initialShows.forEach(function(item){
 	self.showList.push(new Venue(item))
 });
+
 
 this.hide = function() {
 this.visible
@@ -207,7 +209,6 @@ this.filteredList = ko.computed(function() {
 
 }  // end ViewModel
 
-
 function initMap() {
 map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 55.946298, lng: -3.189972},
@@ -216,14 +217,9 @@ map = new google.maps.Map(document.getElementById('map'), {
 
   });
 	// creates one window whose properties are reset when a marker is clicked
-    infowindow = new google.maps.InfoWindow
+infowindow = new google.maps.InfoWindow
 
 ko.applyBindings(new ViewModel());  //initializes ViewModel
 }
-
-
-
-
-
 
 // GoogleMaps key:  AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo
