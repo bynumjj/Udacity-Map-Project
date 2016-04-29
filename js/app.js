@@ -119,11 +119,27 @@ var self = this;
 
 this.show = ko.observable(data.show);
 this.venue = ko.observable(data.venue);
-this.address = ko.observable(data.address);
-this.zipcode = ko.observable(data.zipcode);
-this.latlng = ko.observable(data.latlng);
-this.imgSrc = ko.observable(data.imgSrc);
-this.showInfo = "<p>"+ "<img height='120px' src =" + this.imgSrc() + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address() + "</p>"
+this.address = data.address;
+this.zipcode = data.zipcode;
+this.latlng = data.latlng;
+this.imgSrc = data.imgSrc;
+this.wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + this.show() + '&prop=revisions&rvprop=content&format=json&callback=wikiCallback'
+
+$.ajax({
+    url: this.wikiURL,
+    dataType: 'jsonp',
+    success:  function(response) {
+var articleStr = response[0];
+var link = 'http://en.wikipedia.org/wiki/' + articleStr;
+this.wiki = '<a href="' + link + '">'  + self.show() + '</a>';
+    console.log(this.wiki)
+    } // end success
+}); // end ajax
+
+// Problem:  console.logging this.wiki in the ajax call produces the correct answer.  But referencing this.wiki in the infoWindow -- this.showInfo -- throws undefined.
+
+
+this.showInfo = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address + '<br/>' + this.wiki + "</p>"
 
 // creates markers
 this.marker = new google.maps.Marker({
