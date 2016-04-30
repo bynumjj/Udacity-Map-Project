@@ -10,18 +10,19 @@
 
   <body>
 <div id='header'>
-
+<img id="fringe" src="images/fringeheader5.jpg">
+<img id="logo" src="images/logo3.png">
 <!-- search field -->
 
 <div id="form-container" class="form-container">
-        <input id="search" type='text' data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'" />
+        <input id="search" type='text' placeholder="  Search shows" data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'"/>
         <img src="images/magnifier_small.png" alt="Search button">
 </div>
 <!-- end search field -->
 
   <!-- hamburger icon  P1 -->
   <a id="menu" class="header__menu">
-<img id="hamburger" src='images/hamburger_small.png'>
+<img id="hamburger" src='images/hamburger_ecru.png'>
 </a>
  <!-- end hamburger icon-->
 
@@ -29,10 +30,10 @@
 
 <!-- creates nav drawer -->
 <nav id="drawer" class="nav">
-<h2>Performances</h2>
+<h2>Shows</h2>
 <ul id='venueMenu' data-bind='foreach: filteredList'>
 <li>
-<a href="" data-bind="text: show, click: $parent.select"></a>
+<a href="" data-bind="text: show, click: pop"></a>
 </li>
 </ul>
 
@@ -44,16 +45,17 @@
 <!-- Toggle nav drawer when hamburger is clicked -->
 <script>
       var menu = document.querySelector('#menu');
-      var main = document.querySelector('main');
+      var venueMenu = document.querySelector('#venueMenu')
       var drawer = document.querySelector('.nav');
 
       menu.addEventListener('click', function(e) {
         drawer.classList.toggle('open');
         e.stopPropagation();
       });
-      main.addEventListener('click', function() {
+
+      venueMenu.addEventListener('click', function() {
         drawer.classList.remove('open');
-      });
+        });
 
     </script>
  <!--close menu drawer function-->
