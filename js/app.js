@@ -2,27 +2,33 @@
 
 var map, infowindow, marker;
 
-
 var initialShows = [
 
 {
-		show: 'Jason Byrne',
-		venue: 'Assembly Hall',
-		address:  'Mound Place',
-		zipcode: "EH1 2LU",
-		LatLng: {lat: 55.949863, lng: -3.195508},
-		imgSrc: 'images/jasonbyrne.jpg',
-		windowContent: 'test message Jason Byrne'
+		show: "My Condo",
+		venue: '',
+		address:  '4 North East Circus Place',
+		zipcode: "EH3 6SP",
+		LatLng: {lat: 55.957603, lng: -3.203525},
+		imgSrc: 'images/mycondo.png',
 },
 
 {
-		show: 'The Elephant Man',
-		venue: 'Gilded Ballon',
-		address:  'Teviot Row House',
-		zipcode: "EH8 9AJ",
-		LatLng: {lat: 55.944899, lng: -3.188864},
-		imgSrc: 'images/elephantman.jpg',
-		windowContent: 'test message elephant man'
+		show: 'American Idiot',
+		venue: 'Greenside',
+		address:  '1 b Royal Terrace',
+		zipcode: "EH7 5AB",
+		LatLng: {lat: 55.957466, lng: -3.182602},
+		imgSrc: 'images/americanidiot.jpg'
+},
+
+{
+		show: 'Colin Cloud',
+		venue: 'Underbelly Med Quad',
+		address:  'Teviot Place',
+		zipcode: "EH8 9AG",
+		LatLng: {lat: 55.944410, lng: -3.190305},
+		imgSrc: 'images/colincloud.jpg'
 },
 
 {
@@ -31,8 +37,7 @@ var initialShows = [
 		address:  '16 Drummond Street',
 		zipcode: "EH8 9TX",
 		LatLng: {lat: 55.947355, lng: -3.185113},
-		imgSrc: 'images/fawltytowers.jpg',
-		windowContent: "test message fawlty towers"
+		imgSrc: 'images/fawltytowers.jpg'
 },
 
 {
@@ -41,8 +46,7 @@ var initialShows = [
 		address:  '1 George IV Bridge',
 		zipcode: "EH1 1AD",
 		LatLng: {lat: 55.948985, lng: -3.192447},
-		imgSrc: 'images/kithesketh.jpg',
-		windowContent: "test message Kit Heskety"
+		imgSrc: 'images/kithesketh.jpg'
 },
 
 {
@@ -51,8 +55,7 @@ var initialShows = [
 		address:  '41-43 Inverleith Gardens',
 		zipcode: "EH3 5PR",
 		LatLng: {lat: 55.970603, lng: -3.213589},
-		imgSrc: 'images/Superstar.jpg',
-		windowContent: "test message superstar"
+		imgSrc: 'images/Superstar.jpg'
 },
 
 {
@@ -61,8 +64,7 @@ var initialShows = [
 		address:  'Potterrow',
 		zipcode: "EH8 9AL",
 		LatLng: {lat: 55.946225, lng: -3.187396},
-		imgSrc: 'images/hardeepsingh.jpg',
-		windowContent: "test message Hardeep"
+		imgSrc: 'images/hardeepsingh.jpg'
 },
 
 {
@@ -72,7 +74,6 @@ var initialShows = [
 		zipcode: "EH1 3EB",
 		LatLng: {lat: 55.955710, lng: -3.192245},
 		imgSrc: 'images/stewartlee.jpg',
-		windowContent: "test message Stewart Lee"
 },
 
 {
@@ -82,7 +83,6 @@ var initialShows = [
 		zipcode: "EH8 9TJ",
 		LatLng: {lat: 55.947379, lng: -3.182045},
 		imgSrc: 'images/paulmerton.jpg',
-		windowContent: "test message Paul Merton"
 },
 
 {
@@ -92,7 +92,6 @@ var initialShows = [
 		zipcode: "EH8 9HL",
 		LatLng: {lat: 55.944257, lng: -3.189112},
 		imgSrc: 'images/puddles.jpg',
-		windowContent: 'test message PUddles'
 },
 
 {
@@ -102,17 +101,11 @@ var initialShows = [
 		zipcode: "EH1 1EY",
 		LatLng: {lat: 55.946298, lng: -3.189972},
 		imgSrc: 'images/joestilgoe.jpg',
-		windowContent: "test message joe Stilgoe"
 }
 
 ];
 
-
-// creates the map
-
-// Venue() turns initial input data into ko.observable format.
-// creates markers and click functions and adds them to venue items
-// as a property.
+// Venue() defines show and venue as ko observables, initiates the AJAX request, creates markers and click functions and adds them to venue items as a property.
 var Venue = function(data) {
 
 var self = this;
@@ -123,13 +116,16 @@ this.address = data.address;
 this.zipcode = data.zipcode;
 this.latlng = data.latlng;
 this.imgSrc = data.imgSrc;
-this.wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + this.show() + '&prop=revisions&rvprop=content&format=json&callback=wikiCallback'
+// Defines the Wikipedia query that will be submitted with the AJAX request.
+this.wikiQuery = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + this.show() + '&prop=revisions&rvprop=content&format=json&callback=wikiCallback'
 
+// The contentString will be appended to marker infowindows
 this.contentString = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address + '<br/>' + '%wiki%' + "</p>"
-//
+
+// Including all marker functions in the AJAX request was necessary to make sure the AJAX request had finished before assigning content to the infowindow.  Otherwise, the content was undefined.
 
 $.ajax({
-    url: this.wikiURL,
+    url: this.wikiQuery,
     dataType: 'jsonp',
     success:  function(response) {
 	var articleSubject = response[0];
@@ -138,15 +134,15 @@ $.ajax({
 	self.content = self.contentString.replace('%wiki%', wikiLink)
 
 // creates markers
-this.marker = new google.maps.Marker({
+self.marker = new google.maps.Marker({
     position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
     title: data.show
-  });// end var marker
+  });// end self.marker
 
 //adds click functions to markers
-this.marker.addListener('click', (function() {
+self.marker.addListener('click', (function() {
 		//adds content to infowindow
 	infowindow.setContent(self.content);
 		//opens infowindow
@@ -156,21 +152,22 @@ this.marker.addListener('click', (function() {
     this.setAnimation(null);
   } else {
     this.setAnimation(google.maps.Animation.BOUNCE);
-  }  // close else
+  }  // end else
   	// limits how long markers bounce after click
 	setTimeout(function() {self.marker.setAnimation(null)}, 2050);
-  } // close function
-)); // close marker.addListener
-
-    console.log(this.wiki)
-    } // end success
+  } // end function
+)); // end marker.addListener
+} // end success
 }).fail(function() {
 	alert('Your wikipedia request has failed')
 	}); // end ajax
-
+/*
+var pop = function() {
+	google.maps.event.trigger(self.marker, 'click')
+}
+*/
 }// end Venue()
 
-// ViewModel code
 var ViewModel = function() {
 
 var self = this;
@@ -178,20 +175,15 @@ var self = this;
 this.searchTerm = ko.observable("");
 this.showList = ko.observableArray([]);
 
-// adds each venue to observable array venueList
+// adds each venue to the observable array venueList
 initialShows.forEach(function(item){
 	self.showList.push(new Venue(item))
 });
 
-
-this.hide = function() {
-this.visible
-	this.marker.event('click')
-}
-
-// pushes filtered shows into filteredList array
+// pushes shows that match search term into filteredList array
+// filteredList will populate Shows menu
 // hides non-selected markers
-// closes infowindow
+// closes non-selected infowindow
 this.filteredList = ko.computed(function() {
 		var filter = self.searchTerm().toLowerCase();
 		if (!filter) {
@@ -219,7 +211,7 @@ map = new google.maps.Map(document.getElementById('map'), {
 	// creates one window whose properties are reset when a marker is clicked
 infowindow = new google.maps.InfoWindow
 
-ko.applyBindings(new ViewModel());  //initializes ViewModel
+ko.applyBindings(new ViewModel());
 }
 
 // GoogleMaps key:  AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo
