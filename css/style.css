@@ -7,20 +7,35 @@ html, body {
 }
 
 #header {
-	height: 80px;
+	height: 150px;
 	width: 100%;
-	background-color: yellow;
+
 }
 
+#fringe {
+  width: 100%;
+  height: 150px;
+  z-index: -1;
+  position: absolute;
+  display: inline;
+}
+
+#logo {
+  height: 120px;
+  padding: 15px 0 0 40px ;
+}
 #form-container {
-	float: left;
+	float: right;
 	display: inline;
+  padding-top: 16px;
+  padding-right: 40px;
 }
 
-
-#header img {
-	width: 40px;
-}
+input {
+    height: 30px;
+    width: 230px;
+    font-size: large;
+  }
 
 #hamburger {
   height: 40px;
@@ -28,10 +43,14 @@ html, body {
   display: inline;
 }
 
-a:hover img {
-  background-color: red;
+h2 {
+  color: white;
+  padding: 30px 0 0 75px;
 }
 
+li {
+	padding: 10px;
+}
 /*#drawer {
 	width: 40%;
 	background-color: white;
@@ -44,19 +63,15 @@ a:hover img {
 	float: right;
 }
 
-
-
-
 .nav {
   width: 100%;
-    height: 100%;
+  height: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .nav__list {
   width: 100%;
-
   padding: 0;
   margin: 0;
 }
@@ -73,13 +88,12 @@ a:hover img {
 
 .nav a {
   text-decoration: none;
-  color: #616161;
-  padding: 1.5em;
+  color: white;
 }
 
 .nav a:hover {
   text-decoration: underline;
-  color: #212121;
+  color: #E3137C;
 }
 
 
@@ -87,8 +101,8 @@ a:hover img {
 /* note put this in media query*/
 .nav {
     z-index: 10;
-    background-color: #fff;
-    width: 300px;
+    background-color: #4a7e4a;
+    width: 230px;
     position: absolute;
     /* This trasform moves the drawer off canvas. */
    -webkit-transform: translate(-300px, 0);
@@ -111,10 +125,6 @@ a:hover img {
     position: absolute;
     right: 0;
     padding: 1em;
-  }
-  .header__menu svg {
-    width: 32px;
-    fill: #E0E0E0;
   }
 
 
