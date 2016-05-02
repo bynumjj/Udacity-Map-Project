@@ -105,6 +105,20 @@ var initialShows = [
 
 ];
 
+// Toggles nav drawer when markers or menu are clicked
+var menu = document.querySelector('#menu');
+      var venueMenu = document.querySelector('#venueMenu')
+      var drawer = document.querySelector('.nav');
+
+      menu.addEventListener('click', function(e) {
+        drawer.classList.toggle('open');
+        e.stopPropagation();
+      });
+
+      venueMenu.addEventListener('click', function() {
+        drawer.classList.remove('open');
+        });
+
 // Venue() defines show and venue as ko observables, initiates the AJAX request, creates markers and click functions and adds them to venue items as a property.
 var Venue = function(data) {
 
@@ -133,15 +147,15 @@ $.ajax({
 	var wikiLink = '<a href="' + link + '">'  + self.show() + '</a>';
 	self.content = self.contentString.replace('%wiki%', wikiLink)
 
-// creates markers
+		// creates markers
 self.marker = new google.maps.Marker({
     position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
     title: data.show
-  });// end self.marker
+  });	// end self.marker
 
-//adds click functions to markers
+		//adds click functions to markers
 self.marker.addListener('click', (function() {
 		//adds content to infowindow
 	infowindow.setContent(self.content);
@@ -152,21 +166,23 @@ self.marker.addListener('click', (function() {
     this.setAnimation(null);
   } else {
     this.setAnimation(google.maps.Animation.BOUNCE);
-  }  // end else
-  	// limits how long markers bounce after click
-	setTimeout(function() {self.marker.setAnimation(null)}, 2050);
-  } // end function
-)); // end marker.addListener
-} // end success
+  } 	// end else
+  		// stops marker bounce
+	setTimeout(function() {self.marker.setAnimation(null)}, 750);
+		//shuts nav drawer
+	drawer.classList.remove('open');
+  } 	// end function
+)); 	// end marker.addListener
+} 		// end success
 }).fail(function() {
 	alert('Your wikipedia request has failed')
 	}); // end ajax
-/*
-var pop = function() {
+
+this.pop = function(item) {
 	google.maps.event.trigger(self.marker, 'click')
 }
-*/
-}// end Venue()
+
+}	// end Venue()
 
 var ViewModel = function() {
 
@@ -205,7 +221,7 @@ function initMap() {
 map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 55.946298, lng: -3.189972},
     scrollwheel: true,
-    zoom: 14
+    zoom: 13
 
   });
 	// creates one window whose properties are reset when a marker is clicked
@@ -213,5 +229,6 @@ infowindow = new google.maps.InfoWindow
 
 ko.applyBindings(new ViewModel());
 }
+
 
 // GoogleMaps key:  AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo
