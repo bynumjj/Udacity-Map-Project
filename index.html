@@ -9,24 +9,31 @@
   </head>
 
   <body>
+
 <div id='header'>
-<img id="fringe" src="images/fringeheader5.jpg">
-<img id="logo" src="images/logo3.png">
+<picture id="fringe">
+<source media="(min-width: 769px)" srcset="images/header_large.jpg" />
+<source media="(min-width: 361px)" srcset="images/header_medium.jpg" />
+<img src="images/header_small.jpg" alt="Header composed of pictures of various festival performances">
+</picture>
+
+<img id="logo" src="images/logo.png" alt='Fringe Fest logo'>
+
+ <!-- hamburger icon  P1 -->
+  <a id="menu" class="header__menu">
+<img id="hamburger" src='images/hamburger_yellow.png'>
+</a>
+ <!-- end hamburger icon-->
+
 <!-- search field -->
 
 <div id="form-container" class="form-container">
         <input id="search" type='text' placeholder="  Search shows" data-bind="textInput: searchTerm, valueUpdate: 'afterkeydown'"/>
-        <img src="images/magnifier_small.png" alt="Search button">
-</div>
-<!-- end search field -->
 
-  <!-- hamburger icon  P1 -->
-  <a id="menu" class="header__menu">
-<img id="hamburger" src='images/hamburger_ecru.png'>
-</a>
- <!-- end hamburger icon-->
+</div>  <!-- end search field -->
 
 </div> <!-- end header -->
+
 
 <!-- creates nav drawer -->
 <nav id="drawer" class="nav">
@@ -36,29 +43,14 @@
 <a href="" data-bind="text: show, click: pop"></a>
 </li>
 </ul>
-
 </nav>
 <!-- end nav drawer -->
 
-<div id="map"></div>
+<div id="map" alt="map of Edinburgh">Google Maps failed to load.</div>
 
-<!-- Toggle nav drawer when hamburger is clicked -->
-<script>
-      var menu = document.querySelector('#menu');
-      var venueMenu = document.querySelector('#venueMenu')
-      var drawer = document.querySelector('.nav');
-
-      menu.addEventListener('click', function(e) {
-        drawer.classList.toggle('open');
-        e.stopPropagation();
-      });
-
-      venueMenu.addEventListener('click', function() {
-        drawer.classList.remove('open');
-        });
-
-    </script>
- <!--close menu drawer function-->
+<div class="footer">
+Content provided by GoogleMaps and Wikipedia
+</div>
 
 <script src="js/libs/jquery.min.js"></script>
 <script src="js/libs/knockout-3.2.0.js"></script>
@@ -66,5 +58,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" type="text/css">
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo&callback=initMap"
     async defer></script>
+
+
   </body>
 </html>
