@@ -152,7 +152,8 @@ self.marker = new google.maps.Marker({
     position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
-    title: data.show
+    title: data.show,
+    visible: true
   });	// end self.marker
 
 		//adds click functions to markers
@@ -203,18 +204,21 @@ initialShows.forEach(function(item){
 this.filteredList = ko.computed(function() {
 		var filter = self.searchTerm().toLowerCase();
 		if (!filter) {
+			self.showList().forEach(function(item) {
+				item.marker.setVisible(true)
+			}
 			return self.showList();
 		} else {
 			return ko.utils.arrayFilter(self.showList(), function(item) {
 				var string = item.show().toLowerCase();
 				var showMarker = (string.indexOf(filter) >= 0);
-				item.marker.setVisible(showMarker)
+				item.marker.setVisible(visible)
 				infowindow.close()
 				return showMarker
+			}
 			}); // end else
 		}  // end function
 	}, self);  // end filteredList
-
 }  // end ViewModel
 
 function initMap() {
