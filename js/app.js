@@ -138,6 +138,14 @@ this.contentString = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<
 
 // Including all marker functions in the AJAX request was necessary to make sure the AJAX request had finished before assigning content to the infowindow.  Otherwise, the content was undefined.
 
+self.marker = new google.maps.Marker({
+    position: data.LatLng,
+    map: map,
+    animation: google.maps.Animation.DROP,
+    title: data.show
+  });	// end self.marker
+
+
 $.ajax({
     url: this.wikiQuery,
     dataType: 'jsonp',
@@ -148,12 +156,6 @@ $.ajax({
 	self.content = self.contentString.replace('%wiki%', wikiLink)
 
 		// creates markers
-self.marker = new google.maps.Marker({
-    position: data.LatLng,
-    map: map,
-    animation: google.maps.Animation.DROP,
-    title: data.show
-  });	// end self.marker
 
 		//adds click functions to markers
 self.marker.addListener('click', (function() {
@@ -205,7 +207,6 @@ this.filteredList = ko.computed(function() {
 		if (!filter) {
 		self.showList().forEach(function(item) {
 		item.marker.setVisible(true);
-
 		});// close forEach
 			return self.showList();
 		} // close if
