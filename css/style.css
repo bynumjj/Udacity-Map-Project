@@ -30,7 +30,7 @@ html, body {
 	float: right;
 	display: inline;
   padding-top: 58px;
-  padding-right: 70px;
+  padding-right: 30px;
 }
 
 input {
@@ -40,14 +40,15 @@ input {
 }
 
 #hamburger {
-  height: 50px;
+  height: 40px;
   float: right;
   display: inline;
-  padding: 53px 30px 0 0;
+  padding: 57px 30px 0 0;
 }
 
 #hamburger:hover {
   opacity: 0.5;
+
 }
 
 h2 {
@@ -67,6 +68,7 @@ li {
 }
 
 #map {
+  position: absolute;
 	height: 100%;
 	width: 100%;
 	float: right;
@@ -104,16 +106,14 @@ li {
 }
 
 .footer {
- position: relative;
- bottom: 20px;
- left: -850px;
-  font-size: small;
-  color: black;
+position: absolute;
+ margin: 10px 0px 0px 125px;
+  font-size: x-small;
+  color: #4c4c4d;
   z-index: 3;
-  float: right;
 }
 
-@media only screen and (min-width: 361px) and (max-width: 768px) {
+@media only screen and (min-width: 401px) and (max-width: 768px) {
 
 #header {
   width: 100%;
@@ -142,8 +142,9 @@ input {
 }
 
 #hamburger {
-  padding-top: 30px;
+  padding-top: 43px;
   margin-right: -10px;
+  height: 30px;
 }
 
 h2 {
@@ -166,7 +167,7 @@ li {
 }
 
 }
-@media only screen and (max-width: 360px) {
+@media only screen and (max-width: 400px) {
 
 #header {
   width: 100%;
@@ -190,14 +191,14 @@ li {
 
 input {
  height: 25px;
-  width: 140px;
+  width: 120px;
   font-size: small;
 }
 
 #hamburger {
-  padding-top: 20px;
+  padding-top: 25px;
   margin-right: -10px;
-  height: 40px;
+  height: 30px;
 }
 
 h2 {
