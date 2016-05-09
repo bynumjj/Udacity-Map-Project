@@ -55,7 +55,7 @@ var initialShows = [
 		address:  '41-43 Inverleith Gardens',
 		zipcode: "EH3 5PR",
 		LatLng: {lat: 55.970603, lng: -3.213589},
-		imgSrc: 'images/Superstar.jpg'
+		imgSrc: 'images/superstar.jpg'
 },
 
 {
