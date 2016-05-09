@@ -49,7 +49,6 @@ input {
 
 #hamburger:hover {
   opacity: 0.5;
-
 }
 
 h2 {
@@ -75,6 +74,9 @@ li {
 	float: right;
 }
 
+.box {
+  position: fixed;
+}
 .nav a {
   text-decoration: none;
   color: white;
@@ -171,13 +173,13 @@ li {
 @media only screen and (max-width: 400px) {
 
 #header {
-  width: 100%;
+  max-width: 400px;
   height: 75px;
 }
 
 #fringe {
   height: 75px;
-  min-width: 400px;/* */
+  min-width: 400px;
 }
 
 #logo {
@@ -200,6 +202,10 @@ input {
   padding-top: 25px;
   margin-right: -10px;
   height: 30px;
+}
+
+#map {
+  max-width: 400px;
 }
 
 h2 {
