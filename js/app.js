@@ -1,4 +1,4 @@
-
+"use strict";
 
 var map, infowindow, marker;
 
@@ -106,8 +106,8 @@ var initialShows = [
 ];
 
 // Toggles nav drawer when markers or menu are clicked
-var menu = document.querySelector('#menu');
-      var venueMenu = document.querySelector('#venueMenu')
+var menu = document.querySelector('.menu');
+      var venueMenu = document.querySelector('.venueMenu')
       var drawer = document.querySelector('.nav');
 
       menu.addEventListener('click', function(e) {
@@ -134,28 +134,28 @@ this.imgSrc = data.imgSrc;
 this.wikiQuery = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + this.show() + '&prop=revisions&rvprop=content&format=json&callback=wikiCallback'
 
 // The contentString will be appended to marker infowindows
-this.contentString = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address + '<br/>' + '%wiki%' + "</p>"
+this.contentString = "<p>"+ "<img height='120px' src =" + this.imgSrc + '>' + "<br/>" + this.show() + "<br/>" + this.venue() + "<br/>" + this.address + '<br/>' + '%wiki%' + '</br>' + 'Information provided by Wikipedia' + "</p>"
 
 // Including all marker functions in the AJAX request was necessary to make sure the AJAX request had finished before assigning content to the infowindow.  Otherwise, the content was undefined.
-
+// creates markers
 self.marker = new google.maps.Marker({
     position: data.LatLng,
     map: map,
     animation: google.maps.Animation.DROP,
     title: data.show
-  });	// end self.marker
+  });
 
-
-$.ajax({
+var request = $.ajax({
     url: this.wikiQuery,
-    dataType: 'jsonp',
-    success:  function(response) {
+    dataType: 'jsonp'
+});
+
+//performs various operations if ajax request is successful
+request.done(function(response) {
 	var articleSubject = response[0];
 	var link = 'http://en.wikipedia.org/wiki/' + articleSubject;
 	var wikiLink = '<a href="' + link + '">'  + self.show() + '</a>';
 	self.content = self.contentString.replace('%wiki%', wikiLink)
-
-		// creates markers
 
 		//adds click functions to markers
 self.marker.addListener('click', (function() {
@@ -168,23 +168,24 @@ self.marker.addListener('click', (function() {
     this.setAnimation(null);
   } else {
     this.setAnimation(google.maps.Animation.BOUNCE);
-  } 	// end else
+  }
   		// stops marker bounce
 	setTimeout(function() {self.marker.setAnimation(null)}, 750);
 		//shuts nav drawer
 	drawer.classList.remove('open');
-  } 	// end function
-)); 	// end marker.addListener
-} 		// end success
-}).fail(function() {
+  })); // end addListener
+}); //end request.done
+
+//displays an alert message if the ajax request fails
+request.fail(function() {
 	alert('Your wikipedia request has failed')
-	}); // end ajax
+	});
 
 this.pop = function(item) {
 	google.maps.event.trigger(self.marker, 'click')
 }
 
-}	// end Venue()
+}  //end Venue()
 
 var ViewModel = function() {
 
@@ -200,6 +201,7 @@ initialShows.forEach(function(item){
 
 // pushes shows that match search term into filteredList array
 // filteredList will populate Shows menu
+// resets filteredList when search field is cleared
 // hides non-selected markers
 // closes non-selected infowindow
 this.filteredList = ko.computed(function() {
@@ -207,9 +209,9 @@ this.filteredList = ko.computed(function() {
 		if (!filter) {
 		self.showList().forEach(function(item) {
 		item.marker.setVisible(true);
-		});// close forEach
+		});
 			return self.showList();
-		} // close if
+		}
 		else {
 			return ko.utils.arrayFilter(self.showList(), function(item) {
 				var string = item.show().toLowerCase();
@@ -217,13 +219,11 @@ this.filteredList = ko.computed(function() {
 				item.marker.setVisible(showMarker);
 				infowindow.close();
 				return showMarker
-			}); // end else
-		}  // end function
-	}, self);  // end filteredList
+			});
+		}
+	}, self);
 
-		//	var vm = ko.dataFor(document.body);
-		//	vm.showList()
-}  // end ViewModel
+}
 
 function initMap() {
 map = new google.maps.Map(document.getElementById('map'), {
@@ -232,11 +232,17 @@ map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13
 
   });
+
+// Displays an error message if GoogleMaps fails to load.
+
 	// creates one window whose properties are reset when a marker is clicked
 infowindow = new google.maps.InfoWindow
 
 ko.applyBindings(new ViewModel());
 }
 
+var mapFail = function() {
+	alert("GoogleMaps failed to load.  Try refreshing your browser.")
+}
 
 // GoogleMaps key:  AIzaSyCVPY0V9qzsmmP-J0JL8Obl72Md73sKlXo
