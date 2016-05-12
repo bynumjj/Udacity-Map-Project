@@ -3,35 +3,36 @@
   margin: auto;
 }
 
-html, body {
+html,
+body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-#header {
+.header {
 	height: 150px;
   width: 100%;
+  position: relative;
 }
 
-#fringe {
-  width: 100%;  /**/
+.fringe {
+  width: 100%;
   height: 150px;
   z-index: -1;
   position: fixed;
   display: inline;
 }
 
-#logo {
+.logo {
   height: 100px;
   padding: 22px 0 0 45px ;
 }
 
-#form-container {
-	float: right;
-	display: inline;
+.form-container {
+float: right;
   padding-top: 58px;
-  padding-right: 30px;
+  padding-right: 120px;
 }
 
 input {
@@ -40,14 +41,20 @@ input {
   font-size: large;
 }
 
-#hamburger {
+.hamburger,
+.hamburger_pink {
+position: absolute;
   height: 40px;
-  float: right;
-  display: inline;
-  padding: 57px 30px 0 0;
+  top: 53px;
+  right: 30px;
+  z-index: 2;
 }
 
-#hamburger:hover {
+.hamburger_pink {
+  z-index: 1;
+}
+
+.hamburger:hover {
   opacity: 0.5;
 }
 
@@ -74,9 +81,6 @@ li {
 	float: right;
 }
 
-.box {
-  position: fixed;
-}
 .nav a {
   text-decoration: none;
   color: white;
@@ -88,13 +92,14 @@ li {
 }
 
 .nav {
-  width: 100%;
-  height: 100%;
+      position: absolute;
+      width: 250px;
+    height: 100%;
   margin-left: auto;
   margin-right: auto;
   z-index: 10;
   background-color: #303453;
-  width: 250px;
+
   position: absolute;
     /* This trasform moves the drawer off canvas. */
    -webkit-transform: translate(-300px, 0);
@@ -103,39 +108,41 @@ li {
     transition: transform 0.3s ease;
 }
 
-.nav.open {
+.open {
    -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
 }
 
 .footer {
-position: absolute;
- margin: 10px 0px 0px 125px;
-  font-size: x-small;
+position: relative;
+ top: 10px;
+ right: 20px;
+ float: right;
+  font-size: small;
   color: #4c4c4d;
   z-index: 3;
 }
 
 @media only screen and (min-width: 401px) and (max-width: 768px) {
 
-#header {
+.header {
   width: 100%;
   height: 110px;
 }
 
-#fringe {
+.fringe {
   min-width: 768px;
   height: 110px;
 }
 
-#logo {
+.logo {
   height: 70px;
   padding: 23px 0 0 25px;
 }
 
-#form-container {
+.form-container {
   padding-top: 40px;
-  padding-right: 14px;
+  padding-right: 80px;
 }
 
 input {
@@ -144,9 +151,9 @@ input {
   font-size: medium;
 }
 
-#hamburger {
-  padding-top: 43px;
-  margin-right: -10px;
+.hamburger,
+.hamburger_pink {
+  top: 40px;
   height: 30px;
 }
 
@@ -172,24 +179,24 @@ li {
 }
 @media only screen and (max-width: 400px) {
 
-#header {
+.header {
   max-width: 400px;
   height: 75px;
 }
 
-#fringe {
+.fringe {
   height: 75px;
   min-width: 400px;
 }
 
-#logo {
+.logo {
   height: 43px;
   padding: 18px 0 0 15px;
 }
 
-#form-container {
+.form-container {
   padding-top: 25px;
-  padding-right: 15px;
+  padding-right: 65px;
 }
 
 input {
@@ -198,13 +205,14 @@ input {
   font-size: small;
 }
 
-#hamburger {
-  padding-top: 25px;
-  margin-right: -10px;
+.hamburger,
+.hamburger_pink {
+  top: 25px;
+  right: 10px;
   height: 30px;
 }
 
-#map {
+.map {
   max-width: 400px;
 }
 
